@@ -97,7 +97,12 @@ binary = [
 ]
 # Links ffms2 and FFmpeg statically from the vcpkg tree. See `just build-static`.
 static-ffms2 = ["binary", "av-decoders/ffms2_static", "dep:pkg-config"]
-default = ["vulkan"]
+
+[target.'cfg(any(target_os = "macos", target_os = "ios"))'.dependencies]
+av-denoise = { path = '.', features = ["metal"] }
+
+[target.'cfg(not(any(target_os = "macos", target_os = "ios")))'.dependencies]
+av-denoise = { path = '.', features = ["vulkan"] }
 
 [[bench]]
 name = "denoise"

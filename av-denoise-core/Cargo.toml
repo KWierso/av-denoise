@@ -45,7 +45,12 @@ vulkan = ["cubecl/vulkan", "dep:wgpu"]
 metal = ["cubecl/metal-native"]
 cuda = ["cubecl/cuda"]
 rocm = ["cubecl/hip"]
-default = ["vulkan"]
+
+[target.'cfg(any(target_os = "macos", target_os = "ios"))'.dependencies]
+av-denoise = { path = '.', features = ["metal"] }
+
+[target.'cfg(not(any(target_os = "macos", target_os = "ios")))'.dependencies]
+av-denoise = { path = '.', features = ["vulkan"] }
 
 [[bench]]
 name = "nlmeans"
